@@ -1,0 +1,493 @@
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+import java.awt.geom.Rectangle2D;
+import java.util.Vector;
+
+import javax.swing.JPanel;
+
+public class paints extends JPanel  implements MouseMotionListener, MouseWheelListener, MouseListener{
+
+	Vector<Object> saveinfo = new Vector<Object>();
+	
+	Save info;
+	//xx , yy 는 이동을 위한 추가 거리 변수
+	int x, y, x1, y1, w, h, xx, yy;
+	public paints()
+	{
+        addMouseListener(this);
+        addMouseMotionListener(this);
+        addMouseWheelListener(this);
+		
+	}
+	
+    @Override
+    public void paintComponent(Graphics g){
+    	Graphics2D g2 = (Graphics2D)g;
+    	super.paintComponent(g2);
+    	g2.setColor(myFrame.setcolor);
+    	
+    	for(int i = 0 ; i<saveinfo.size() ; i++)
+    	{
+    		Save info = (Save)saveinfo.elementAt(i);
+    		
+    	if(info.getshape() == "line"){
+    		g2.setStroke(new BasicStroke(info.getvold() ) );
+    		g2.setColor(info.getcolor());
+    		g2.drawLine(info.getX(),info.getY(),info.getX1(),info.getY1());    
+    	}
+    	
+    	else if(info.getshape() == "freeline"){
+    		g2.setStroke(new BasicStroke(info.getvold() ) );
+    		g2.setColor(info.getcolor());
+    		g2.drawLine(info.getX(),info.getY(),info.getX1(),info.getY1());    
+    	}
+    	
+       	else if(info.getshape() == "tryangle"){
+    		g2.setStroke(new BasicStroke(info.getvold() ) );
+       		g2.setColor(info.getcolor());
+    		g2.drawPolygon(info.getXpoint(), info.getYpoint(), 3);
+       		
+       	}
+       	else if(info.getshape() == "filltryangle"){
+       		g2.setStroke(new BasicStroke(info.getvold() ) );
+       		g2.setColor(info.getcolor());
+    		g2.fillPolygon(info.getXpoint(), info.getYpoint(), 3);
+       	}
+       	else if(info.getshape() == "circle"){
+       		g2.setStroke(new BasicStroke(info.getvold() ) );
+    		g2.setColor(info.getcolor());
+    		g2.drawOval(info.getX(),info.getY(),info.getW(),info.getH());    
+       	}
+       	else if(info.getshape() == "fillcircle"){
+       		g2.setStroke(new BasicStroke(info.getvold() ) );
+    		g2.setColor(info.getcolor());
+    		g2.fillOval(info.getX(),info.getY(),info.getW(),info.getH());       		
+       	}
+      	else if(info.getshape() == "diamond"){
+      		g2.setStroke(new BasicStroke(info.getvold() ) );
+    		g2.setColor(info.getcolor());
+    		g2.drawPolygon(info.getXpoint(), info.getYpoint(), 4);    		
+      	}
+      	else if(info.getshape() == "filldiamond"){
+      		g2.setStroke(new BasicStroke(info.getvold() ) );
+    		g2.setColor(info.getcolor());
+    		g2.fillPolygon(info.getXpoint(), info.getYpoint(), 4);  
+      	}
+       	else if(info.getshape() == "rectangle"){
+       		g2.setStroke(new BasicStroke(info.getvold() ) );
+    		g2.setColor(info.getcolor());
+    		g2.drawRect(info.getX(),info.getY(),info.getW(),info.getH());
+    		
+       	}
+       	else if(info.getshape() == "fillrectangle"){
+       		g2.setStroke(new BasicStroke(info.getvold() ) );
+    		g2.setColor(info.getcolor());
+    		g2.fillRect(info.getX(),info.getY(),info.getW(),info.getH());       
+       	}
+       	else if(info.getshape() == "roundrectangle"){
+       		g2.setStroke(new BasicStroke(info.getvold() ) );
+    		g2.setColor(info.getcolor());
+       		g2.drawRoundRect(info.getX(),info.getY(),info.getW(),info.getH(), 50,50); 
+       	}
+       	else if(info.getshape() == "eraser"){
+       		g2.setStroke(new BasicStroke(info.getvold() ) );
+    		g2.clearRect(info.getX(), info.getY(), info.getEra(), info.getEra());
+
+       	}    
+    	}
+    	switch(myFrame.draw)
+    	{
+    	case "line":
+    		g.setColor(myFrame.setcolor);
+    		g.drawLine(x, y, x1, y1);
+    	break;
+    	case "freeline":
+    		g.setColor(myFrame.setcolor);
+    		g.drawLine(x, y, x1, y1);
+    		break;    		
+    	case "tryangle":
+    		g2.setColor(info.getcolor());
+    		g2.drawPolygon(info.getXpoint(), info.getYpoint(), 3);
+    		break;
+    	case "filltryangle":
+    		g2.setColor(info.getcolor());
+    		g2.fillPolygon(info.getXpoint(), info.getYpoint(), 3);
+    		break;
+    	case "circle":
+    		g.setColor(info.getcolor());
+    		g.drawOval(x,y,w,h);
+    		break;
+    	case "fillcircle":
+    		g.setColor(info.getcolor());
+    		g.fillOval(x,y,w,h);     
+    		break;
+    	case "diamond":
+    		g2.setColor(info.getcolor());
+    		g2.drawPolygon(info.getXpoint(), info.getYpoint(), 4);
+    		break;
+    	case "filldiamond":
+    		g2.setColor(info.getcolor());
+    		g2.fillPolygon(info.getXpoint(), info.getYpoint(), 4);
+    		break;
+    	case "rectangle":
+    		g.setColor(info.getcolor());
+    		g.drawRect(x,y,w,h);
+    		break;
+    	case "fillrectangle":
+    		g.setColor(info.getcolor());
+    		g.fillRect(x,y,w,h);
+    		break;
+    	case "roundrectangle":
+    		g2.setColor(info.getcolor());
+       		g2.drawRoundRect(x,y,w,h, 50,50); 
+    		break;
+    	case "eraser":
+    		g2.clearRect(info.getX(),info.getY(), info.getEra(), info.getEra());
+    		break;
+    		
+    }
+
+    }
+//    도형 이동 이벤트 처리
+    public void shiftObject(int x,int y)
+    {
+//    	w = info.getX()-x;
+//    	h = info.getY()-y;
+       	info.setX(x);
+    	info.setY(y);
+    	info.setW(w);
+    	info.setH(h);
+//    	this.x = x;
+//    	this.y = y;
+    	repaint();
+    }
+    //도형 확대 , 축소 이벤트 처리
+    public void scaleObject(double scale)
+    {
+     scale += 1;
+     int cx, dx, cy, dy;
+     cx = x + w/2;
+     cy = y + h/2;
+     dx = cx - x;
+     dy = cy - y;
+     info.setX(cx - (int)(dx * scale));
+     info.setY(cy - (int)(dy * scale));
+     info.setW((int)(info.getW()*scale+0.5));
+     info.setH((int)(info.getH()*scale+0.5));
+     if( info.getW()<5) info.setW(5);
+     if( info.getH()<5) info.setH(5);
+     System.out.println(info.getX()+","+info.getY()+"["+info.getW()+","+info.getH()+"]");
+     //repaint();
+    }
+    
+    //마우스 휠 이벤트
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+     if( (e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0 )
+     {
+        int notches = e.getWheelRotation();
+        System.out.println("wheel "+notches);
+        scaleObject(-notches*0.1);
+        repaint();
+     }
+    }
+      //마우스 드래그 이벤트 
+	    @Override
+	    public void mousePressed(MouseEvent e) 
+	    {
+//			if( (e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) != 0 ){
+//				x = e.getX();
+//		    	y = e.getY();
+//		    	//repaint();
+//			}
+//			else{
+	    	x = e.getX();
+	    	y = e.getY();	    	
+			}
+//}
+	    @Override
+	    public void mouseReleased(MouseEvent e) 
+	    {
+	    	x1 = e.getX();
+	    	y1 = e.getY();
+	    	if( (e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) != 0 ){
+//			if(InputEvent.BUTTON3_DOWN_MASK != 0){	
+	    		info.setX1(x1);
+	    		info.setY1(y1);
+	    		repaint();
+			}
+	    	else
+	    	{
+
+//	    	w = e.getX() - x;
+//	        h = e.getY() - y;
+	        if(w<0 && h>0){
+		    	// x = x - (-w);
+		    	 w = -w;
+		     }
+		     else if(w>0 && h<0){
+		    	// y = y - (-h);
+		    	 h = -h;
+		     }
+		     else if(w<0 && h<0){
+		    	//x = x + w;
+		    	//y = y + h;
+		    	w = -w;
+		    	h = -h;
+		     }
+	        repaint();
+	        
+	    	System.out.println("(" + x1 + "," + y1 + ")");	    	
+	    	
+	    	if(myFrame.draw == "line")
+	    	{
+	    	info = new Save();
+	    	info.setshape("line");
+	    	info.setX(x);
+	    	info.setY(y);
+	    	info.setX1(x1);
+	    	info.setY1(y1);
+	    	info.setW(w);
+	    	info.setH(h);
+	    	info.setcolor(myFrame.setcolor);
+	    	info.setvold(myFrame.vold);
+	    	saveinfo.add(info);
+	    	}	    	
+	    	else if(myFrame.draw == "circle"){
+	    		info = new Save();
+		    	info.setshape("circle");
+		    	info.setX(x);
+		    	info.setY(y);
+		    	info.setX1(x1);
+		    	info.setY1(y1);
+		    	info.setW(w);
+		    	info.setH(h);
+		    	info.setcolor(myFrame.setcolor);
+		    	info.setvold(myFrame.vold);
+		    	saveinfo.add(info);
+	    	}
+	    	else if(myFrame.draw == "fillcircle"){
+	    		info = new Save();
+		    	info.setshape("fillcircle");
+		    	info.setX(x);
+		    	info.setY(y);
+		    	info.setX1(x1);
+		    	info.setY1(y1);
+		    	info.setW(w);
+		    	info.setH(h);
+		    	info.setcolor(myFrame.setcolor);
+		    	info.setvold(myFrame.vold);
+		    	saveinfo.add(info);
+	    	}
+	    	else if(myFrame.draw == "tryangle"){
+	    		info = new Save();
+		    	info.setshape("tryangle");
+		    	info.setX(x);
+		    	info.setY(y);
+		    	info.setX1(x1);
+		    	info.setY1(y1);
+		    	info.setW(w);
+		    	info.setH(h);
+//		    	int[] xpoint = 
+//		    		{info.getX1()-((info.getX1()-info.getX())/2), info.getX(), info.getX1()};
+//		    	int[] ypoint = 
+//		    		{info.getY(),info.getY1(),info.getY1()};
+		    	int[] x1point = {x1-((x1-x)/2), x, x1};
+		    	int[] y1point = 
+		    		{y,y1,y1};
+		    	info.setXpoint(x1point);
+		    	info.setYpoint(y1point);		    	
+		    	info.setcolor(myFrame.setcolor);
+		    	info.setvold(myFrame.vold);
+		    	saveinfo.add(info);
+	    	}
+	    	else if(myFrame.draw == "filltryangle"){
+	    		info = new Save();
+		    	info.setshape("filltryangle");
+		    	info.setX(x);
+		    	info.setY(y);
+		    	info.setX1(x1);
+		    	info.setY1(y1);
+		    	info.setW(w);
+		    	info.setH(h);
+		    	int[] x1point = {x1-((x1-x)/2), x, x1};
+		    	int[] y1point = {y,y1,y1};
+		    	info.setXpoint(x1point);
+		    	info.setYpoint(y1point);		    	
+		    	info.setcolor(myFrame.setcolor);
+		    	info.setvold(myFrame.vold);
+		    	saveinfo.add(info);
+	    	}
+	    	else if(myFrame.draw == "rectangle"){
+	    		info = new Save();
+		    	info.setshape("rectangle");
+		    	info.setX(x);
+		    	info.setY(y);
+		    	info.setX1(x1);
+		    	info.setY1(y1);
+		    	info.setW(w);
+		    	info.setH(h);
+		    	info.setcolor(myFrame.setcolor);
+		    	info.setvold(myFrame.vold);
+		    	saveinfo.add(info);
+	    	}	    
+	    	else if(myFrame.draw == "fillrectangle"){
+	    		info = new Save();
+		    	info.setshape("fillrectangle");
+		    	info.setX(x);
+		    	info.setY(y);
+		    	info.setX1(x1);
+		    	info.setY1(y1);
+		    	info.setW(w);
+		    	info.setH(h);
+		    	info.setcolor(myFrame.setcolor);
+		    	info.setvold(myFrame.vold);
+		    	saveinfo.add(info);
+	    	}	    
+	    	else if(myFrame.draw == "diamond"){
+	    		info = new Save();
+		    	info.setshape("diamond");
+		    	info.setX(x);
+		    	info.setY(y);
+		    	info.setX1(x1);
+		    	info.setY1(y1);
+		    	info.setW(w);
+		    	info.setH(h);
+		    	int[] x2point = {x1-((x1-x)/2), x, x1-((x1-x)/2), x1};
+		    	int[] y2point = {y,y1,y1+(y1-y),y1};
+		    	info.setXpoint(x2point);
+		    	info.setYpoint(y2point);
+		    	
+		    	info.setcolor(myFrame.setcolor);
+		    	info.setvold(myFrame.vold);
+		    	saveinfo.add(info);
+	    	}	    
+	    	else if(myFrame.draw == "filldiamond"){
+	    		info = new Save();
+		    	info.setshape("filldiamond");
+		    	info.setX(x);
+		    	info.setY(y);
+		    	info.setX1(x1);
+		    	info.setY1(y1);
+		    	info.setW(w);
+		    	info.setH(h);
+		    	int[] x2point = {x1-((x1-x)/2), x, x1-((x1-x)/2), x1};
+		    	int[] y2point = {y,y1,y1+(y1-y),y1};
+		    	info.setXpoint(x2point);
+		    	info.setYpoint(y2point);
+		    	
+		    	info.setcolor(myFrame.setcolor);
+		    	info.setvold(myFrame.vold);
+		    	saveinfo.add(info);
+	    	}	    
+	    	else if(myFrame.draw == "roundrectangle"){
+	    		info = new Save();
+		    	info.setshape("roundrectangle");
+		    	info.setX(x);
+		    	info.setY(y);
+		    	info.setX1(x1);
+		    	info.setY1(y1);
+		    	info.setW(w);
+		    	info.setH(h);
+		    	info.setcolor(myFrame.setcolor);
+		    	info.setvold(myFrame.vold);
+		    	saveinfo.add(info);
+	    	}	    
+	    	}
+	    }
+	    @Override
+	    public void mouseDragged(MouseEvent e) 
+	    {	    	
+		 if( (e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) != 0 ){
+			 info.setX(e.getX());
+			 info.setY(e.getY());
+			 repaint();
+			 
+//			 int cx,cy;
+//			 cx = e.getX()-info.getXX();
+//			 cy = e.getY()-info.getYY();			 
+//			 shiftObject(cx,cy);
+			 
+//			 repaint();
+//			 x = e.getX();
+//	    	 y = e.getY();
+//			 w = e.getX() - x;
+//		     h = e.getY() - y;
+//			 info.setX(info.getX()+w);
+//			 info.setY(info.getY()+h);
+//			 repaint();
+		 }
+		 else{
+			 x1 = e.getX();
+	    	 y1 = e.getY();
+	    	 w = e.getX() - x;
+		     h = e.getY() - y;
+		     if(w<0 && h>0){
+		    	// x = x - (-w);
+		    	 w = -w;
+		     }
+		     else if(w>0 && h<0){
+		    	// y = y - (-h);
+		    	 h = -h;
+		     }
+		     else if(w<0 && h<0){
+		    	//x = x + w;
+		    	//y = y + h;
+		    	w = -w;
+		    	h = -h;
+		     }
+		     
+		     
+	    	System.out.println("(" + x1 + "," + y1 + ")");
+	    	System.out.println("리페인트 테스트");
+	    	repaint();
+		 
+	    	if(myFrame.draw == "freeline")
+	    	{
+	    		info = new Save();
+		    	info.setshape("freeline");
+		    	info.setX(x);
+		    	info.setY(y);
+		    	info.setX1(x1);
+		    	info.setY1(y1);
+		    	info.setW(w);
+		    	info.setH(h);
+		    	info.setcolor(myFrame.setcolor);
+		    	info.setvold(myFrame.vold);
+		    	saveinfo.add(info);		    	
+		    	x = x1;
+		    	y = y1;
+	    	}
+	    	else if(myFrame.draw == "eraser"){
+	    		info = new Save();
+		    	info.setshape("eraser");
+		    	info.setX(x);
+		    	info.setY(y);
+		    	info.setX1(x1);
+		    	info.setY1(y1);
+		    	info.setW(w);
+		    	info.setH(h);
+		    	info.setEra(myFrame.eravold);
+		    	saveinfo.add(info);
+		    	x=x1;
+		    	y=y1;
+	    	}		    	
+		 }
+	    }	    
+	    public void mouseMoved(MouseEvent e) {}
+	    public void mouseClicked(MouseEvent arg0) {}
+	    public void mouseEntered(MouseEvent arg0) {}
+	    public void mouseExited(MouseEvent arg0) {}
+	    
+}
+
+

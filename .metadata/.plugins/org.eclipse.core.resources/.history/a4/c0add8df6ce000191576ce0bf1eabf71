@@ -1,0 +1,57 @@
+import java.util.Scanner;
+
+public class Equation03 {
+
+	public static void main(String[] args) {
+		int a, b, c, d, e;
+		
+		Scanner input = new Scanner(System.in);
+		System.out.print("계수 5개를 입력하세요 : ");
+		a = input.nextInt();
+		b = input.nextInt();
+		c = input.nextInt();
+		d = input.nextInt();
+		e = input.nextInt();
+		
+		int number[] = {a,b,c,d,e};
+		
+		//방정식 모양 나타내기
+		String expression = "";
+		int y = number.length;
+		for (int x=0;x<number.length;x++) {
+			y--;
+			if (number[x] == 0) {
+				continue;
+			}
+			if (x<number.length-1) {
+				expression = expression + number[x]+"*x^"+y+" + ";
+				continue;
+			}
+		}
+		expression = expression + e;
+		System.out.println(expression);
+	
+		
+		System.out.print("x를 입력하세요 : ");
+		int k = input.nextInt();
+		
+		//방정식 계산결과
+		int total = 0;
+		String total_expression = " ";
+		int j = number.length;
+		for(int i=0;i < number.length;i++) {
+			j--;
+			if(number[i] == 0) {
+				continue;
+			}
+			int add = (int)(number[i]*Math.pow(k,j));
+			total_expression = total_expression + add;
+			total = total + add;
+
+		}
+
+		System.out.println(total);
+
+	}
+	
+}
